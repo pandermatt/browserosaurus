@@ -96,7 +96,11 @@ async function getActivities() {
     .map(activity => {
       // resets cmd to config version, in case changed in config.
       const index = activities.findIndex(a => a.name === activity.name)
-      return { ...activity, cmd: activities[index].cmd }
+      return {
+        ...activity,
+        primaryCommand: activities[index].primaryCommand,
+        cmdCommand: activities[index].cmdCommand || null,
+      }
     })
 
   // merge the stored with installed apps, this will add new apps where necessary, keeping the stored config if present.

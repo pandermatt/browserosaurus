@@ -26,7 +26,7 @@ class ActivityContainer extends Component {
     this.setState({ isActive: true }, () => {
       setTimeout(() => {
         // timeout is to show the active state briefly before opening activity.
-        this.runActivity()
+        this.runPrimaryCommand()
       }, 200)
     })
   }
@@ -45,16 +45,33 @@ class ActivityContainer extends Component {
   }
 
   /**
-   * Run Activity
+   * Run Primary Command
    *
    * Tells the OS to open chosen activity with this.props.url.
    */
-  runActivity = () => {
-    if (this.props.isAppVisible) {
+  runPrimaryCommand = () => {
+    spawn('sh', [
+      '-c',
+      this.props.activity.primaryCommand.replace('{URL}', this.props.url),
+    ])
+  }
+
+  runCmdCommand = () => {
+    if (this.props.activity.cmdCommand) {
       spawn('sh', [
         '-c',
-        this.props.activity.cmd.replace('{URL}', this.props.url),
+        this.props.activity.cmdCommand.replace('{URL}', this.props.url),
       ])
+    }
+  }
+
+  handleClick = e => {
+    if (this.props.isAppVisible) {
+      if (e.metaKey) {
+        this.runCmdCommand()
+      } else {
+        this.runPrimaryCommand()
+      }
 
       this.props.onClick()
 
@@ -83,7 +100,7 @@ class ActivityContainer extends Component {
         defaultActivity={this.props.defaultActivity}
         isActive={isActive}
         isTooltipOpen={isTooltipOpen}
-        onClick={this.runActivity}
+        onClick={this.handleClick}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       />

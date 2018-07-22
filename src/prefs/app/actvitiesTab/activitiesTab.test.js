@@ -6,13 +6,13 @@ import ActivitiesTab from './activitiesTab.component'
 const activities = [
   {
     appId: 'Firefox',
-    cmd: 'open "{URL}" -a Firefox',
+    primaryCommand: 'open "{URL}" -a Firefox',
     enabled: true,
     hotKey: 'f',
     name: 'Firefox',
   },
   {
-    cmd: 'echo "{URL}" | pbcopy',
+    primaryCommand: 'echo "{URL}" | pbcopy',
     enabled: true,
     hotKey: 'space',
     name: 'Copy To Clipboard',
